@@ -1,5 +1,6 @@
 import { AppBlock, events } from "@slflows/sdk/v1";
 import { getDb } from "../utils/client.ts";
+import { collectionConfig } from "../utils/collections.ts";
 
 export const dropIndex: AppBlock = {
   name: "Drop Index",
@@ -9,12 +10,7 @@ export const dropIndex: AppBlock = {
   inputs: {
     default: {
       config: {
-        collection: {
-          name: "Collection",
-          description: "Name of the collection to drop the index from",
-          type: "string",
-          required: true,
-        },
+        collection: collectionConfig,
         indexName: {
           name: "Index Name",
           description:

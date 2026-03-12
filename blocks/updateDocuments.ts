@@ -1,5 +1,6 @@
 import { AppBlock, events } from "@slflows/sdk/v1";
 import { getDb } from "../utils/client.ts";
+import { collectionConfig } from "../utils/collections.ts";
 
 export const updateDocuments: AppBlock = {
   name: "Update Documents",
@@ -10,12 +11,7 @@ export const updateDocuments: AppBlock = {
   inputs: {
     default: {
       config: {
-        collection: {
-          name: "Collection",
-          description: "Name of the collection to operate on",
-          type: "string",
-          required: true,
-        },
+        collection: collectionConfig,
         operation: {
           name: "Operation",
           description: "The update operation to perform",
@@ -46,10 +42,25 @@ export const updateDocuments: AppBlock = {
         },
         options: {
           name: "Options",
-          description:
-            "Additional options (e.g. { upsert: true } to insert if no match found)",
+          description: "Additional settings for the update operation",
           type: {
             type: "object",
+            properties: {
+              upsert: {
+                type: "boolean",
+                description:
+                  "Insert a new document if no documents match the filter",
+              },
+              hint: {
+                type: "object",
+                description:
+                  "Index hint to force a specific index (e.g. { _id: 1 })",
+              },
+              comment: {
+                type: "string",
+                description: "Comment to attach to the operation for profiling",
+              },
+            },
             additionalProperties: true,
           },
           required: false,

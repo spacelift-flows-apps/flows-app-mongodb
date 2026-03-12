@@ -1,5 +1,6 @@
 import { AppBlock, events } from "@slflows/sdk/v1";
 import { getDb } from "../utils/client.ts";
+import { collectionConfig } from "../utils/collections.ts";
 
 export const createIndex: AppBlock = {
   name: "Create Index",
@@ -9,12 +10,7 @@ export const createIndex: AppBlock = {
   inputs: {
     default: {
       config: {
-        collection: {
-          name: "Collection",
-          description: "Name of the collection to create the index on",
-          type: "string",
-          required: true,
-        },
+        collection: collectionConfig,
         keys: {
           name: "Index Keys",
           description:
@@ -27,10 +23,34 @@ export const createIndex: AppBlock = {
         },
         options: {
           name: "Options",
-          description:
-            'Index options (e.g. { unique: true, name: "email_unique", sparse: true })',
+          description: "Additional settings for the index",
           type: {
             type: "object",
+            properties: {
+              unique: {
+                type: "boolean",
+                description: "Create a unique index",
+              },
+              sparse: {
+                type: "boolean",
+                description:
+                  "Only index documents that contain the indexed fields",
+              },
+              name: {
+                type: "string",
+                description:
+                  "Custom index name (auto-generated if not specified)",
+              },
+              expireAfterSeconds: {
+                type: "number",
+                description:
+                  "TTL index — automatically delete documents this many seconds after the indexed date field value",
+              },
+              background: {
+                type: "boolean",
+                description: "Build the index in the background",
+              },
+            },
             additionalProperties: true,
           },
           required: false,

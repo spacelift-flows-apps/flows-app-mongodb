@@ -1,5 +1,6 @@
 import { AppBlock, events } from "@slflows/sdk/v1";
 import { getDb } from "../utils/client.ts";
+import { collectionConfig } from "../utils/collections.ts";
 
 export const aggregate: AppBlock = {
   name: "Aggregate",
@@ -10,12 +11,7 @@ export const aggregate: AppBlock = {
   inputs: {
     default: {
       config: {
-        collection: {
-          name: "Collection",
-          description: "Name of the collection to aggregate",
-          type: "string",
-          required: true,
-        },
+        collection: collectionConfig,
         pipeline: {
           name: "Pipeline",
           description:
@@ -30,10 +26,30 @@ export const aggregate: AppBlock = {
         },
         options: {
           name: "Options",
-          description:
-            "Aggregation options (e.g. { allowDiskUse: true } for large datasets)",
+          description: "Additional settings for the aggregation pipeline",
           type: {
             type: "object",
+            properties: {
+              allowDiskUse: {
+                type: "boolean",
+                description:
+                  "Allow the aggregation to use disk for large datasets",
+              },
+              maxTimeMS: {
+                type: "number",
+                description:
+                  "Maximum time in milliseconds for the aggregation to run",
+              },
+              comment: {
+                type: "string",
+                description: "Comment to attach to the operation for profiling",
+              },
+              let: {
+                type: "object",
+                description:
+                  "Variables accessible in the pipeline via $$varName",
+              },
+            },
             additionalProperties: true,
           },
           required: false,

@@ -1,5 +1,6 @@
 import { AppBlock, events } from "@slflows/sdk/v1";
 import { getDb } from "../utils/client.ts";
+import { collectionConfig } from "../utils/collections.ts";
 
 export const deleteDocuments: AppBlock = {
   name: "Delete Documents",
@@ -9,12 +10,7 @@ export const deleteDocuments: AppBlock = {
   inputs: {
     default: {
       config: {
-        collection: {
-          name: "Collection",
-          description: "Name of the collection to delete from",
-          type: "string",
-          required: true,
-        },
+        collection: collectionConfig,
         operation: {
           name: "Operation",
           description: "Delete one matching document or all matching documents",
@@ -36,9 +32,20 @@ export const deleteDocuments: AppBlock = {
         },
         options: {
           name: "Options",
-          description: "Additional options (e.g. { hint: { _id: 1 } })",
+          description: "Additional settings for the delete operation",
           type: {
             type: "object",
+            properties: {
+              hint: {
+                type: "object",
+                description:
+                  "Index hint to force a specific index (e.g. { _id: 1 })",
+              },
+              comment: {
+                type: "string",
+                description: "Comment to attach to the operation for profiling",
+              },
+            },
             additionalProperties: true,
           },
           required: false,

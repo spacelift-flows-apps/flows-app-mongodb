@@ -1,5 +1,6 @@
 import { AppBlock, events } from "@slflows/sdk/v1";
 import { getDb } from "../utils/client.ts";
+import { collectionConfig } from "../utils/collections.ts";
 
 export const insertDocuments: AppBlock = {
   name: "Insert Documents",
@@ -9,12 +10,7 @@ export const insertDocuments: AppBlock = {
   inputs: {
     default: {
       config: {
-        collection: {
-          name: "Collection",
-          description: "Name of the collection to insert into",
-          type: "string",
-          required: true,
-        },
+        collection: collectionConfig,
         documents: {
           name: "Documents",
           description: "Array of documents to insert",

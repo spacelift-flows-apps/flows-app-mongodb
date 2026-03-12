@@ -1,5 +1,6 @@
 import { AppBlock, events } from "@slflows/sdk/v1";
 import { getDb } from "../utils/client.ts";
+import { collectionConfig } from "../utils/collections.ts";
 
 export const findDocuments: AppBlock = {
   name: "Find Documents",
@@ -9,12 +10,7 @@ export const findDocuments: AppBlock = {
   inputs: {
     default: {
       config: {
-        collection: {
-          name: "Collection",
-          description: "Name of the collection to query",
-          type: "string",
-          required: true,
-        },
+        collection: collectionConfig,
         filter: {
           name: "Filter",
           description:
