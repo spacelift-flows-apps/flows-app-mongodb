@@ -32,22 +32,22 @@ export const app = defineApp({
       required: false,
       default: false,
     },
-    tlsCAFile: {
-      name: "TLS CA Certificate",
+    caCertificate: {
+      name: "CA Certificate",
       description:
-        "PEM-encoded CA certificate for verifying the server certificate",
+        "PEM-encoded CA certificate for verifying the server certificate (e.g., AWS DocumentDB CA bundle)",
       type: "string",
       required: false,
       sensitive: true,
     },
-    connectTimeout: {
-      name: "Connect Timeout",
+    connectionTimeout: {
+      name: "Connection Timeout",
       description: "Connection timeout in seconds",
       type: "number",
       required: false,
       default: 10,
     },
-    serverSelectionTimeout: {
+    selectionTimeout: {
       name: "Server Selection Timeout",
       description: "Server selection timeout in seconds",
       type: "number",

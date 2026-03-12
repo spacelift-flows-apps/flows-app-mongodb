@@ -5,11 +5,14 @@
  */
 
 import { findDocuments } from "./findDocuments";
-import { executeCommand } from "./executeCommand";
+import { updateDocuments } from "./updateDocuments";
+import { deleteDocuments } from "./deleteDocuments";
 import { insertDocuments } from "./insertDocuments";
 import { aggregate } from "./aggregate";
 import { streamDocuments } from "./streamDocuments";
 import { getCollectionInfo } from "./getCollectionInfo";
+import { createIndex } from "./createIndex";
+import { dropIndex } from "./dropIndex";
 import { runCommand } from "./runCommand";
 
 /**
@@ -17,21 +20,27 @@ import { runCommand } from "./runCommand";
  */
 export const blocks = {
   findDocuments,
-  executeCommand,
+  updateDocuments,
+  deleteDocuments,
   insertDocuments,
   aggregate,
   streamDocuments,
   getCollectionInfo,
+  createIndex,
+  dropIndex,
   runCommand,
 } as const;
 
 // Named exports for individual blocks
 export {
   findDocuments,
-  executeCommand,
+  updateDocuments,
+  deleteDocuments,
   insertDocuments,
   aggregate,
   streamDocuments,
   getCollectionInfo,
+  createIndex,
+  dropIndex,
   runCommand,
 };

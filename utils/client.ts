@@ -14,9 +14,9 @@ function getConfigHash(appConfig: any): string {
     connectionString: appConfig.connectionString,
     database: appConfig.database,
     tls: appConfig.tls,
-    tlsCAFile: appConfig.tlsCAFile,
-    connectTimeout: appConfig.connectTimeout,
-    serverSelectionTimeout: appConfig.serverSelectionTimeout,
+    caCertificate: appConfig.caCertificate,
+    connectionTimeout: appConfig.connectionTimeout,
+    selectionTimeout: appConfig.selectionTimeout,
   };
   return crypto
     .createHash("sha256")
@@ -29,16 +29,14 @@ function getConfigHash(appConfig: any): string {
  */
 export function createClientOptions(appConfig: any): MongoClientOptions {
   const options: MongoClientOptions = {
-    connectTimeoutMS: (appConfig.connectTimeout as number) * 1000,
-    serverSelectionTimeoutMS:
-      (appConfig.serverSelectionTimeout as number) * 1000,
+    connectTimeoutMS: (appConfig.connectionTimeout as number) * 1000,
+    serverSelectionTimeoutMS: (appConfig.selectionTimeout as number) * 1000,
   };
 
   if (appConfig.tls) {
     options.tls = true;
-    if (appConfig.tlsCAFile) {
-      options.tlsCertificateKeyFile = undefined;
-      options.ca = appConfig.tlsCAFile as string;
+    if (appConfig.caCertificate) {
+      options.ca = appConfig.caCertificate as string;
     }
   }
 
