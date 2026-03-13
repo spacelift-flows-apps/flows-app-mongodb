@@ -1,34 +1,20 @@
 import memoizee from "memoizee";
-import { MongoClient } from "mongodb";
-import { createClientOptions } from "./client.ts";
+import { getDb } from "./client.ts";
 
 interface CollectionEntry {
   name: string;
   type: string;
 }
 
-async function fetchCollections(
-  connectionString: string,
-  database: string,
-  optionsJson: string,
-): Promise<CollectionEntry[]> {
-  const options = JSON.parse(optionsJson);
-  options.maxPoolSize = 1;
-
-  const client = new MongoClient(connectionString, options);
-  try {
-    await client.connect();
-    const db = client.db(database);
-    const collections = await db
-      .listCollections({}, { nameOnly: true })
-      .toArray();
-    return collections.map((c) => ({
-      name: c.name,
-      type: c.type || "collection",
-    }));
-  } finally {
-    await client.close().catch(() => {});
-  }
+async function fetchCollections(appConfig: any): Promise<CollectionEntry[]> {
+  const db = await getDb(appConfig);
+  const collections = await db
+    .listCollections({}, { nameOnly: true })
+    .toArray();
+  return collections.map((c) => ({
+    name: c.name,
+    type: c.type || "collection",
+  }));
 }
 
 const getCollections = memoizee(fetchCollections, {
@@ -47,12 +33,7 @@ async function suggestCollections(input: any) {
     };
   }
 
-  const options = createClientOptions(input.app.config);
-  const collections = await getCollections(
-    connectionString as string,
-    database as string,
-    JSON.stringify(options),
-  );
+  const collections = await getCollections(input.app.config);
 
   let values = collections.map((c) => ({
     label: c.type === "view" ? `${c.name} (view)` : c.name,
