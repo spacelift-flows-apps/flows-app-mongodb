@@ -18,6 +18,7 @@ export const insertDocuments: AppBlock = {
             type: "array",
             items: {
               type: "object",
+              additionalProperties: true,
             },
           },
           required: true,
